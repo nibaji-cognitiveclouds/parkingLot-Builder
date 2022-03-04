@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home renders correctly 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+>
+  <RCTScrollView
+    style={
+      Object {
+        "borderColor": "transparent",
+        "borderRadius": 10,
+        "borderWidth": 2,
+        "margin": 10,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "padding": 30,
+          }
+        }
+      >
+        <TextInput
+          keyboardType="numeric"
+          onEndEditing={[Function]}
+          onSubmitEditing={[Function]}
+          placeholder="Enter number of parking lots"
+          placeholderTextColor="grey"
+          style={
+            Object {
+              "borderColor": "black",
+              "borderRadius": 5,
+              "borderWidth": 0.5,
+              "padding": 10,
+              "width": "80%",
+            }
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
+`;
