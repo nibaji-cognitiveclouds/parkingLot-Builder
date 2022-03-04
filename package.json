@@ -13,7 +13,9 @@
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "jest-enzyme": "^7.1.2",
     "react": "17.0.2",
+    "react-dom": "^17.0.2",
     "react-native": "0.67.3",
     "react-native-safe-area-context": "^4.1.2",
     "react-native-screens": "^3.13.1",
@@ -29,6 +31,8 @@
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "babel-jest": "^27.5.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^7.14.0",
     "jest": "^27.5.1",
     "metro-react-native-babel-preset": "^0.66.2",
@@ -51,6 +55,10 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>setup-tests.js",
+      "./node_modules/jest-enzyme/lib/index.js"
+    ]
   }
 }
