@@ -63,17 +63,23 @@ const HomeScreen: React.FC = () => {
 
     return (
         <SafeAreaView>
-            <ScrollView >
+            <ScrollView style={{
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: parkingLot.length > 0 ? 'blue' : "transparent",
+                margin: 10
+            }}>
                 {parkingLot.length > 0 ? <TouchableOpacity
                     activeOpacity={1}
                     onPress={() => {
                         openAddModal()
                     }}
                     style={{
-                        justifyContent: "center",
+                        // justifyContent: "center",
                         alignItems: "center",
                         padding: 30,
                         flex: 1,
+                        minHeight: 10000,
                     }}
                 >
 
