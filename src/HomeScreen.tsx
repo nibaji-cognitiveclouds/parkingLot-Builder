@@ -12,6 +12,8 @@ const HomeScreen: React.FC = () => {
 
     const [parkingLot, setParkingLot] = React.useState<Array<{ id: number; free: boolean; car: null | string, start: Date }>>([])
 
+    let freeLots: number[] = []
+
     const getParkingLots = () => {
         let theParkingLot: { id: number; free: boolean; car: null | string, start: Date }[] = []
         for (let i = 0; i < numberOfParkingLots; i++) {
@@ -35,6 +37,21 @@ const HomeScreen: React.FC = () => {
         }
     }
 
+    const openAddModal = () => {
+        freeLots = []
+        parkingLot.map(item => {
+            if (item.free) {
+                freeLots.push(item.id)
+            }
+        })
+        if (freeLots.length) {
+            setCurrentLot(freeLots[Math.floor(Math.random() * freeLots.length) || 0])
+            // setTimeout(() => {
+            setAddModalVisible(true)
+        }
+        // }, 2000)
+    }
+
     React.useEffect(() => {
         getParkingLots()
         if (parkingLot.length > numberOfParkingLots) {
@@ -47,7 +64,11 @@ const HomeScreen: React.FC = () => {
     return (
         <SafeAreaView>
             <ScrollView >
-                {parkingLot.length > 0 ? <View
+                {parkingLot.length > 0 ? <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                        openAddModal()
+                    }}
                     style={{
                         justifyContent: "center",
                         alignItems: "center",
@@ -68,16 +89,16 @@ const HomeScreen: React.FC = () => {
                             style={{
                                 height: "20%",
                                 top: "33%",
-                                backgroundColor: "rgba(0, 0, 0, 0.1)",
+                                backgroundColor: "rgb(255, 255, 255)",
                                 elevation: 10,
                                 padding: 20,
                                 margin: 20,
                                 borderRadius: 20,
                                 alignItems: "center",
-                                justifyContent: "center"
+                                justifyContent: "center",
                             }}
                         >
-                            <Text style={{ color: "red", top: "-30%" }} onPress={() => { setAddModalVisible(false); setCurrentLot(null) }}>X</Text>
+                            <Text style={{ color: "red", top: "-30%" }} onPress={() => { setAddModalVisible(false); setCurrentLot(freeLots[0] || null) }}>X</Text>
                             <TextInput
                                 placeholder='Car Reg number'
                                 placeholderTextColor={"grey"}
@@ -121,7 +142,7 @@ const HomeScreen: React.FC = () => {
                             style={{
                                 height: "20%",
                                 top: "33%",
-                                backgroundColor: "rgba(0, 0, 0, 0.1)",
+                                backgroundColor: "rgb(255,255,255)",
                                 elevation: 10,
                                 padding: 20,
                                 margin: 20,
@@ -165,7 +186,7 @@ const HomeScreen: React.FC = () => {
                                     <Text style={{ color: "white" }}>Yes</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() => { setRemoveModalVisible(false); setCurrentLot(null) }}
+                                    onPress={() => { setRemoveModalVisible(false); setCurrentLot(freeLots[0] || null) }}
                                     style={{
                                         backgroundColor: "green",
                                         padding: 5,
@@ -177,11 +198,17 @@ const HomeScreen: React.FC = () => {
                         </View>
                     </Modal>
 
+                    {/* <TouchableOpacity activeOpacity={1}
+                        onPress={() => {
+                            openAddModal()
+                        }}
+                    > */}
                     {
                         parkingLot.map((lot, index) => {
                             return (
                                 <TouchableOpacity
-                                    onPress={() => { lot.free ? setAddModalVisible(true) : setRemoveModalVisible(true); setCurrentLot(lot.id) }}
+                                    activeOpacity={1}
+                                    onPress={() => { lot.free ? openAddModal() : setRemoveModalVisible(true); setCurrentLot(lot.id) }}
                                     key={index}
                                     style={{
                                         borderColor: "black",
@@ -212,7 +239,8 @@ const HomeScreen: React.FC = () => {
                             )
                         })
                     }
-                </View>
+                </TouchableOpacity>
+                    // </TouchableOpacity>
                     : <View
                         style={{
                             justifyContent: "center",
