@@ -9,8 +9,10 @@ import {
 	Text,
 	TouchableOpacity,
 	Modal,
+	SafeAreaView,
 } from "react-native";
 import { Snackbar } from "react-native-paper";
+import { styles } from "../styles/screen";
 
 const Home: React.FC = () => {
 	const [totalLots, setTotalLots] = React.useState<number>(0);
@@ -89,162 +91,160 @@ const Home: React.FC = () => {
 	}
 
 	return (
-		<View>
-			<Snackbar
-				visible={showSnackBar}
-				onDismiss={() => setShowSnackBar(false)}
-				action={{
-					label: "Ok",
-					onPress: () => {
-						setShowSnackBar(false);
-					},
-				}}
-				style={{
-					backgroundColor: "blue",
-					zIndex: 10,
-					position: "absolute",
-					bottom: 0,
-				}}
-			>
-				<View style={{}}>
-					<Text>No lot is free</Text>
-				</View>
-			</Snackbar>
-			{/* Add Modal */}
-			<Modal visible={addModal}>
-				<View>
-					<Text>Add a Vehicle</Text>
-					<TextInput
-						placeholder="Enter a Reg. Id"
-						placeholderTextColor={"black"}
-						onChangeText={(text) => {
-							setReg(text);
-						}}
-					/>
-					<View style={{ flexDirection: "row" }}>
-						<Button
-							title="Cancel"
-							onPress={() => {
-								freeLots.length && setCurrentLot(freeLots[0].id);
-								setAddModal(false);
-							}}
-						/>
-						<Button
-							title="Add"
-							onPress={() => {
-								setLotsDetails(
-									lotsDetails.map((lot) => {
-										return lot.id == currentLot
-											? { ...lot, free: false, reg: reg, start: new Date() }
-											: lot;
-									})
-								);
-								freeLots.length && setCurrentLot(freeLots[0].id);
-								setAddModal(false);
-							}}
-						/>
-					</View>
-				</View>
-			</Modal>
-
-			{/* Remove Modal */}
-			<Modal
-				visible={removeModal}
-				onShow={() => {
-					currentLot != undefined &&
-						calculatehrsAndAmt(lotsDetails[currentLot].start);
-				}}
-			>
-				<View>
-					<Text>Remove {reg}</Text>
-					<Text>Total time : {hrs} hours</Text>
-					<Text>Total amount : ${amount}</Text>
-					<View style={{ flexDirection: "row" }}>
-						<Button
-							title="Cancel"
-							onPress={() => {
-								freeLots.length && setCurrentLot(freeLots[0].id);
-								setRemoveModal(false);
-							}}
-						/>
-						<Button
-							title="Remove"
-							onPress={() => {
-								setLotsDetails(
-									lotsDetails.map((lot) => {
-										return lot.id == currentLot
-											? {
-													...lot,
-													free: true,
-													reg: "",
-													start: new Date(0, 0, 0),
-											  }
-											: lot;
-									})
-								);
-								freeLots.length && setCurrentLot(freeLots[0].id);
-								setRemoveModal(false);
-							}}
-						/>
-					</View>
-				</View>
-			</Modal>
-
-			{totalLots == 0 ? (
-				<View>
-					<TextInput
-						testID="parkingLotsTotal"
-						placeholder="Enter number of Parking Lots"
-						placeholderTextColor={"black"}
-						keyboardType={"numeric"}
-						onChangeText={(text) => {
-							setText(Number(text));
-						}}
-					/>
-					<Button
-						title="Submit"
-						onPress={() => {
-							text > 0 && setTotalLots(text);
-						}}
-					/>
-				</View>
-			) : (
-				<TouchableOpacity
-					onPress={() => {
-						handleAdd(true);
+		<SafeAreaView>
+			<View style={styles.screen}>
+				<Snackbar
+					visible={showSnackBar}
+					onDismiss={() => setShowSnackBar(false)}
+					action={{
+						label: "Ok",
+						onPress: () => {
+							setShowSnackBar(false);
+						},
 					}}
+					style={styles.snackBar}
 				>
-					<FlatList
-						data={lotsDetails}
-						renderItem={({ item }) => {
-							return (
-								<TouchableOpacity
-									onPress={() => {
-										// while (currentLot == undefined) {
-										setCurrentLot(item.id);
-										// }
-										item.free ? handleAdd() : handleRemove();
-									}}
-									style={{
-										flexDirection: "row",
-										backgroundColor: item.free ? "green" : "red",
-										padding: 20,
-										margin: 20,
-									}}
-								>
-									<Text style={{ color: "white" }}>
-										{"PL" + Number(item.id + 1)}
-									</Text>
-									<Text style={{ color: "white" }}>
-										{item.free ? "Free" : `Occupied by ${item.reg}`}
-									</Text>
-								</TouchableOpacity>
-							);
+					<View>
+						<Text>No lot is free</Text>
+					</View>
+				</Snackbar>
+				{/* Add Modal */}
+				<Modal visible={addModal} animationType={"slide"}>
+					<View style={styles.modal}>
+						<Text>Add a Vehicle</Text>
+						<TextInput
+							placeholder="Enter a Reg. Id"
+							placeholderTextColor={"black"}
+							onChangeText={(text) => {
+								setReg(text);
+							}}
+							style={styles.textInput}
+						/>
+						<View style={styles.buttonRow}>
+							<Button
+								title="Cancel"
+								onPress={() => {
+									freeLots.length && setCurrentLot(freeLots[0].id);
+									setAddModal(false);
+								}}
+							/>
+							<Button
+								title="Add"
+								onPress={() => {
+									setLotsDetails(
+										lotsDetails.map((lot) => {
+											return lot.id == currentLot
+												? { ...lot, free: false, reg: reg, start: new Date() }
+												: lot;
+										})
+									);
+									freeLots.length && setCurrentLot(freeLots[0].id);
+									setAddModal(false);
+								}}
+							/>
+						</View>
+					</View>
+				</Modal>
+
+				{/* Remove Modal */}
+				<Modal
+					visible={removeModal}
+					onShow={() => {
+						currentLot != undefined &&
+							calculatehrsAndAmt(lotsDetails[currentLot].start);
+					}}
+					animationType={"slide"}
+				>
+					<View style={styles.modal}>
+						<Text>Remove {reg}</Text>
+						<Text>Total time : {hrs} hours</Text>
+						<Text>Total amount : ${amount}</Text>
+						<View style={styles.buttonRow}>
+							<Button
+								title="Cancel"
+								onPress={() => {
+									freeLots.length && setCurrentLot(freeLots[0].id);
+									setRemoveModal(false);
+								}}
+							/>
+							<Button
+								title="Remove"
+								onPress={() => {
+									setLotsDetails(
+										lotsDetails.map((lot) => {
+											return lot.id == currentLot
+												? {
+														...lot,
+														free: true,
+														reg: "",
+														start: new Date(0, 0, 0),
+												  }
+												: lot;
+										})
+									);
+									freeLots.length && setCurrentLot(freeLots[0].id);
+									setRemoveModal(false);
+								}}
+							/>
+						</View>
+					</View>
+				</Modal>
+
+				{totalLots == 0 ? (
+					<View>
+						<TextInput
+							testID="parkingLotsTotal"
+							placeholder="Enter number of Parking Lots"
+							placeholderTextColor={"black"}
+							keyboardType={"numeric"}
+							onChangeText={(text) => {
+								setText(Number(text));
+							}}
+							style={styles.textInput}
+						/>
+						<Button
+							title="Submit"
+							onPress={() => {
+								text > 0 && setTotalLots(text);
+							}}
+						/>
+					</View>
+				) : (
+					<TouchableOpacity
+						onPress={() => {
+							handleAdd(true);
 						}}
-					/>
-				</TouchableOpacity>
-			)}
-		</View>
+					>
+						<FlatList
+							data={lotsDetails}
+							renderItem={({ item }) => {
+								return (
+									<TouchableOpacity
+										onPress={() => {
+											// while (currentLot == undefined) {
+											setCurrentLot(item.id);
+											// }
+											item.free ? handleAdd() : handleRemove();
+										}}
+										style={{
+											...styles.lot,
+											backgroundColor: item.free ? "green" : "red",
+										}}
+									>
+										<Text style={{ color: "white" }}>
+											{"PL" + Number(item.id + 1)}
+										</Text>
+										<Text style={{ color: "white" }}>
+											{item.free ? "Free" : `Occupied by ${item.reg}`}
+										</Text>
+									</TouchableOpacity>
+								);
+							}}
+						/>
+					</TouchableOpacity>
+				)}
+			</View>
+		</SafeAreaView>
 	);
 };
 
