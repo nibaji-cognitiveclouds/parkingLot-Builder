@@ -13,25 +13,13 @@ import {
 } from "react-native";
 import { Snackbar } from "react-native-paper";
 import { style } from "../styles/screens";
+import { lotDetailsType } from "../types/components";
+import { lotsPropsType } from "../types/screens";
 
-const Lots: FC<any> = (props) => {
-	const [lotsList, setLotsList] = useState<
-		{
-			id: number;
-			reg: string;
-			free: boolean;
-			start: Date;
-		}[]
-	>([]);
+const Lots: FC<lotsPropsType> = (props) => {
+	const [lotsList, setLotsList] = useState<lotDetailsType[]>([]);
 	const [currentLot, setCurrentLot] = useState<number>(0);
-	const [freeLotsList, setFreeLotsList] = useState<
-		{
-			id: number;
-			reg: string;
-			free: boolean;
-			start: Date;
-		}[]
-	>(lotsList);
+	const [freeLotsList, setFreeLotsList] = useState<lotDetailsType[]>(lotsList);
 	const [reg, setReg] = useState<string>("");
 	const [showAddModal, setShowAddModal] = useState<boolean>(false);
 	const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
