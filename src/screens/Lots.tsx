@@ -12,6 +12,7 @@ import {
 	View,
 } from "react-native";
 import { Snackbar } from "react-native-paper";
+import { style } from "../styles/screens";
 
 const Lots: FC<any> = (props) => {
 	const [lotsList, setLotsList] = useState<
@@ -100,10 +101,10 @@ const Lots: FC<any> = (props) => {
 	}
 
 	return (
-		<SafeAreaView testID="lots">
+		<SafeAreaView testID="lots" style={{}}>
 			{/* Add Modal */}
-			<Modal visible={showAddModal}>
-				<View>
+			<Modal visible={showAddModal} animationType="slide">
+				<View style={style.modal}>
 					<Text>Add Vehicle to P{currentLot}</Text>
 					<TextInput
 						placeholder="Enterv reg. number"
@@ -111,9 +112,10 @@ const Lots: FC<any> = (props) => {
 						onChangeText={(text) => {
 							setReg(text);
 						}}
+						style={style.input}
 					/>
 
-					<View style={{ flexDirection: "row" }}>
+					<View style={style.buttonRow}>
 						<Button
 							title="Add"
 							onPress={() => {
@@ -149,13 +151,14 @@ const Lots: FC<any> = (props) => {
 				onShow={() => {
 					calculateHrsAmt();
 				}}
+				animationType="slide"
 			>
-				<View>
+				<View style={style.modal}>
 					<Text>Pay and Remove Vehicle from P{currentLot}</Text>
 					<Text>Total hours: {hrs}</Text>
 					<Text>Total Amount:{amnt}</Text>
 
-					<View style={{ flexDirection: "row" }}>
+					<View style={style.buttonRow}>
 						<Button
 							title="Remove"
 							onPress={() => {
@@ -189,24 +192,35 @@ const Lots: FC<any> = (props) => {
 			</Modal>
 
 			<Snackbar visible={showSnack} onDismiss={() => setShowSnack(false)}>
-				<View>
+				<View style={style.snack}>
 					<Text>the parking is full</Text>
 				</View>
 			</Snackbar>
 
-			<TouchableOpacity onPress={() => handleAdd(true)}>
+			<TouchableOpacity
+				onPress={() => handleAdd(true)}
+				style={style.parkingArea}
+			>
 				<FlatList
 					data={lotsList}
 					renderItem={({ item }) => (
 						<TouchableOpacity
-							style={{ flexDirection: "row" }}
 							onPress={() => {
 								setCurrentLot(item.id);
 								item.free ? handleAdd(false) : handleRemove();
 							}}
 						>
-							<Text>P{item.id}</Text>
-							<Text>{item.free ? "Free" : `Occupied by ${item.reg}`}</Text>
+							<View
+								style={{
+									...style.item,
+									backgroundColor: item.free ? "green" : "red",
+								}}
+							>
+								<Text style={style.itemText}>P{item.id}</Text>
+								<Text style={style.itemText}>
+									{item.free ? "Free" : `Occupied by ${item.reg}`}
+								</Text>
+							</View>
 						</TouchableOpacity>
 					)}
 				/>
