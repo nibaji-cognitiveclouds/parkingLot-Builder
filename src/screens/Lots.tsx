@@ -11,6 +11,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
+import { Snackbar } from "react-native-paper";
 
 const Lots: FC<any> = (props) => {
 	const [lotsList, setLotsList] = useState<
@@ -33,6 +34,7 @@ const Lots: FC<any> = (props) => {
 	const [reg, setReg] = useState<string>("");
 	const [showAddModal, setShowAddModal] = useState<boolean>(false);
 	const [showRemoveModal, setShowRemoveModal] = useState<boolean>(false);
+	const [showSnack, setShowSnack] = useState<boolean>(false);
 
 	const [hrs, setHrs] = useState<number>(0);
 	const [amnt, setAmnt] = useState<number>(0);
@@ -71,6 +73,11 @@ const Lots: FC<any> = (props) => {
 			if (currentLot >= 0) {
 				setShowAddModal(true);
 			}
+		} else {
+			setShowSnack(true);
+			setTimeout(() => {
+				setShowSnack(false);
+			}, 2000);
 		}
 	}
 
@@ -180,6 +187,13 @@ const Lots: FC<any> = (props) => {
 					</View>
 				</View>
 			</Modal>
+
+			<Snackbar visible={showSnack} onDismiss={() => setShowSnack(false)}>
+				<View>
+					<Text>the parking is full</Text>
+				</View>
+			</Snackbar>
+
 			<TouchableOpacity onPress={() => handleAdd(true)}>
 				<FlatList
 					data={lotsList}
