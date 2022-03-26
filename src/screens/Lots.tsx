@@ -55,6 +55,7 @@ const Lots: FC<lotsPropsType> = (props) => {
 	}
 
 	function handleAdd(random: boolean) {
+		setReg("");
 		if (freeLotsList.length > 0) {
 			if (random) {
 				getRandom();
@@ -89,7 +90,7 @@ const Lots: FC<lotsPropsType> = (props) => {
 	}
 
 	return (
-		<SafeAreaView testID="lots" style={{}}>
+		<SafeAreaView testID="lots" style={style.container2}>
 			{/* Add Modal */}
 			<Modal visible={showAddModal} animationType="slide">
 				<View style={style.modal}>
@@ -105,6 +106,7 @@ const Lots: FC<lotsPropsType> = (props) => {
 
 					<View style={style.buttonRow}>
 						<Button
+							disabled={reg.length == 0}
 							title="Add"
 							onPress={() => {
 								if (reg.length) {
@@ -179,10 +181,12 @@ const Lots: FC<lotsPropsType> = (props) => {
 				</View>
 			</Modal>
 
-			<Snackbar visible={showSnack} onDismiss={() => setShowSnack(false)}>
-				<View style={style.snack}>
-					<Text>the parking is full</Text>
-				</View>
+			<Snackbar
+				visible={showSnack}
+				onDismiss={() => setShowSnack(false)}
+				style={style.snack}
+			>
+				<Text style={style.snackText}>the parking is full</Text>
 			</Snackbar>
 
 			<TouchableOpacity

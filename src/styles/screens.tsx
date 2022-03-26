@@ -9,7 +9,11 @@ export const style = StyleSheet.create({
 		padding: 10,
 		justifyContent: "center",
 		alignItems: "center",
-		width: "100%",
+	},
+	container2: {
+		flex: 1,
+		backgroundColor: "white",
+		padding: 10,
 	},
 	input: {
 		padding: 5,
@@ -47,5 +51,9 @@ export const style = StyleSheet.create({
 	snack: {
 		bottom: 5,
 		backgroundColor: "red",
+		padding: 10,
+	},
+	snackText: {
+		color: "white",
 	},
 });

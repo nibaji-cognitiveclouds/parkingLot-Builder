@@ -22,6 +22,7 @@ const Home: FC = () => {
 				style={style.input}
 			/>
 			<Button
+				disabled={lots == 0}
 				title="Submit"
 				onPress={() => {
 					navigation.navigate("Lots", { lots: lots });
